@@ -1,0 +1,207 @@
+<div class="list row">
+
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <input 
+          type="text"
+          class="form-control"
+          placeholder="Entrer Nom Produit"
+          [(ngModel)]="nom"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            (click)="searchTitle()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Nouveau Produit</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" (click)="removeAllProduits()" class="btn btn-sm btn-danger" >Effacer Tout</button>
+    </div>   
+
+
+  </div>
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nom Produit</th>
+        <th scope="col">Prix unitaire</th>
+        <th scope="col">Quantite</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr data-toggle="modal" data-target="#infoModal" data-whatever="@getbootstrap"  *ngFor="let produit of produits; let i = index"
+      [class.active]="i == currentIndex"
+      (click)="setActiveProduit(produit, i)">
+        <th scope="row">{{ produit.id }}</th>
+        <td>{{ produit.nom }}</td>
+        <td>{{ produit.prixunitaire }}</td>
+        <td>{{ produit.quantite }}</td>
+        <td data-toggle="modal" data-target="#infoModal" data-whatever="@getbootstrap"> <button type="button" class="btn btn-sm btn-warning" >Modifier</button></td>
+
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div *ngIf="submitted" class="alert alert-primary" role="alert">
+    {{ message }}
+  </div>
+
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau Produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="submit-form">
+              <div *ngIf="!submitted">
+                <div class="form-group">
+                  <label for="nom">nom</label>
+                  <input 
+                    type="text"
+                    class="form-control"
+                    id="nom"
+                    required
+                    [(ngModel)]="produit.nom"
+                    name="nom"
+                  />
+                </div>
+          
+                <div class="form-group">
+                  <label for="prixunitaire">prixunitaire</label>
+                  <input
+                    class="form-control"
+                    id="prixunitaire"
+                    required
+                    [(ngModel)]="produit.prixunitaire"
+                    name="prixunitaire"
+                  />
+                </div>
+                <div class="form-group">
+                    <label for="quantite">quantite</label>
+                    <input
+                      class="form-control"
+                      id="quantite"
+                      required
+                      [(ngModel)]="produit.quantite"
+                      name="quantite"
+                    />
+                  </div>
+          
+              
+              </div>
+          
+              <div *ngIf="submitted">
+                <h4>{{ message }}</h4>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+         
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="button" (click)="saveProduit()" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel">Produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div *ngIf="currentProduit.id" class="edit-form">
+             
+              <form>
+                <div class="form-group">
+                  <label for="nom">nom</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nom"
+                    [(ngModel)]="currentProduit.nom"
+                    name="nom"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="prixunitaire">prixunitaire</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="prixunitaire"
+                    [(ngModel)]="currentProduit.prixunitaire"
+                    name="prixunitaire"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="quantite">quantite</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="quantite"
+                    [(ngModel)]="currentProduit.quantite"
+                    name="quantite"
+                  />
+                </div>  
+        
+              </form>
+          
+         
+        
+          
+              <div *ngIf="submitted" ="alert alert-warning" role="alert">
+                {{ message }}
+              </div>
+            
+            </div>
+          
+            <div *ngIf="!currentProduit.id">
+              <br />
+              <p>Cannot access this Product...</p>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="button" (click)="deleteProduit()" class="btn btn-danger">Supprimer</button>
+          <button type="button" (click)="updateProduit()" class="btn btn-warning">Modifier</button>
+        </div>
+      </div>
+    </div>
+  </div>
